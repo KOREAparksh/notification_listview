@@ -53,7 +53,7 @@ Scaffold(
 ```
 
 ## Showcase
-![showcase1](./assets/showcase1.png)
+![showcase1](https://github.com/KOREAparksh/notification_listview/blob/main/assets/showcase1.png?raw=true)
 
 ## Additional information
 
