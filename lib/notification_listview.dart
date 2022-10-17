@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:notification_listview/notification_header.dart';
 import 'package:notification_listview/notification_type.dart';
 
-class NotiListView extends StatelessWidget {
-  const NotiListView({
+class NotificationListView extends StatelessWidget {
+  const NotificationListView({
     Key? key,
     required this.hasHeader,
     required this.itemBuilder,
