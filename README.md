@@ -16,7 +16,8 @@ know whether this package might be useful for them.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+This package is for Hyundai Auto Ever internship assignments.
+This list view is optimized for the notification type used in the Hyundai Auto Ever project.
 
 ## Getting started
 
@@ -29,7 +30,31 @@ TODO: Include short and useful examples for package users. Add longer examples
 to `/example` folder. 
 
 ```dart
-const like = 'sample';
+Scaffold(
+    body:  NotificationListView(
+            hasHeader: true,
+            onTapSearch: () {
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("123"),
+                ));
+            },
+            onTapAll: () {},
+            onTapAlert: () {},
+            onTapNormal: () {},
+            onTapChatting: () {},
+            selectedType: null,
+            isSearching: false,
+            itemCount: 7,
+            itemBuilder: (context, int i) => NotiListViewTile(
+                isFirst: (i == 0) ? true : false,
+                isNew: true,
+                title: "123",
+                content: "이 알림Tile은 서비스 일반 안내 시 사용됩니다.",
+                notiTileType: list[0],
+                ),
+            ),
+    );
 ```
 
 ## Additional information
