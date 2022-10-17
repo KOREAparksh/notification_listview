@@ -14,6 +14,7 @@ and the Flutter guide for
 ## Features
 
 This package is for Hyundai Auto Ever internship assignments.
+
 This list view is optimized for the notification type used in the Hyundai Auto Ever project.
 
 ## Getting started
