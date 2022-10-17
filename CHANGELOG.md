@@ -1,3 +1,6 @@
+## 1.0.0+2
+* Write README
+
 ## 1.0.0+1
 * Modify docs
 
