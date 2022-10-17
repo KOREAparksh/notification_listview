@@ -1,25 +1,31 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+<h1 align="center">Notification ListView</h1>
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+<p align="center">
+<a href="https://www.hyundai-autoever.com/kor/main/index.do" target="_blank" rel="noreferrer noopener">
+    <img src="https://www.hyundai.co.kr/image/upload/asset_library/MDA00000000000000179/5640ebe4255e4960a93e218f29f44a6d.png" width="50%" alt="logo">
+</a>
+</p>
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
+<p align="center">
+  <a >
+    <img src="https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white" />
+  </a>
+  <a>
+    <img src="https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white">
+  </a>
+</p>
+
+---
+
+
+
 
 ## Features
 
-This package is for Hyundai Auto Ever internship assignments.
+This package is for **Hyundai AutoEver** internship assignments.
 
-This list view is optimized for the notification type used in the Hyundai Auto Ever project.
+This list view is optimized for the notification type used in the Hyundai AutoEver project.
 
-## Getting started
-
-See the usage.
 
 ## Usage
 
@@ -27,30 +33,28 @@ See the usage.
 Scaffold(
     body:  NotificationListView(
             hasHeader: true,
-            onTapSearch: () {
-                ScaffoldMessenger.of(context).clearSnackBars();
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("123"),
-                ));
-            },
+            onTapSearch: () {}, //nullable
             onTapAll: () {},
             onTapAlert: () {},
             onTapNormal: () {},
             onTapChatting: () {},
-            selectedType: null,
-            isSearching: false,
+            selectedType: null, // for header button color
+            isSearching: false, // for button color
             itemCount: 7,
             itemBuilder: (context, int i) => NotiListViewTile(
-                isFirst: (i == 0) ? true : false,
-                isNew: true,
-                title: "123",
-                content: "이 알림Tile은 서비스 일반 안내 시 사용됩니다.",
-                notiTileType: list[0],
+                isFirst: (i == 0) ? true : false, // for top margin
+                isNew: true, // for badge
+                title: "title",
+                content: "content",
+                notiTileType: notiTileType.normal,
                 ),
             ),
     );
 ```
 
+## Showcase
+![showcase1](./assets/showcase1.png)
+
 ## Additional information
 
-...
+NotificationListView is the same as listview.builder except for the header related properties.
