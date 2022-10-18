@@ -7,6 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:notification_listview/notification_header.dart';
 import 'package:notification_listview/notification_type.dart';
 
+///This [NotificationListView] is optimized for the notification type used in the Hyundai Auto Ever project.
+///
+///Same as listview.builder except for itembuilder and header related properties.
+///
+///No comments are left except for custom values and properties.
+///
+///See [ListView.builder].
+///
+///These comments refer to [GroupedListView].
+
 @immutable
 class NotificationListView<T> extends StatefulWidget {
   const NotificationListView({
@@ -36,12 +46,32 @@ class NotificationListView<T> extends StatefulWidget {
     this.clipBehavior = Clip.hardEdge,
     this.onTapSearch,
     this.isSearching = false,
-  }) : super(key: key);
+  })  : assert(itemBuilder != null || indexItemBuilder != null),
+        super(key: key);
 
   //Custom
+
+  ///Full list of items.
   final List<T> elements;
+
+  ///This function is for checking the type of each item.
   final NotiTileType Function(T element) groupBy;
+
+  ///If this value is false, the header is not displayed.
+  final bool hasHeader;
+
+  ///If this value is null, the Search button is not visible.
+  final VoidCallback? onTapSearch;
+
+  ///If this value is true, the Search button's color changes.
+  final bool isSearching;
+
+  ///Call to build children for this list with
+  ///0 <= element < element.length
   final Widget Function(BuildContext context, T element)? itemBuilder;
+
+  ///Call to build children for this list with
+  ///0 <= element < element.length
   final Widget Function(BuildContext context, T element, int index)?
       indexItemBuilder;
 
@@ -64,9 +94,6 @@ class NotificationListView<T> extends StatefulWidget {
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
   final String? restorationId;
   final Clip clipBehavior;
-  final bool hasHeader;
-  final VoidCallback? onTapSearch;
-  final bool isSearching;
 
   @override
   State<NotificationListView<T>> createState() =>
@@ -74,7 +101,10 @@ class NotificationListView<T> extends StatefulWidget {
 }
 
 class _NotificationListViewState<T> extends State<NotificationListView<T>> {
+  ///It is a list that extracts and stores the values actually shown in elements.
   final List<T> _list = [];
+
+  ///This is the currently selected type.
   NotiTileType _selectedType = NotiTileType.all;
 
   @override
@@ -82,6 +112,7 @@ class _NotificationListViewState<T> extends State<NotificationListView<T>> {
     super.initState();
   }
 
+  ///This method extracts and stores only the values to be used in the element.
   void setList() {
     _list.clear();
 

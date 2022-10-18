@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:notification_listview/notification_listview.dart';
 import 'package:notification_listview/notification_type.dart';
+
+///See [NotificationListView].
 
 class NotiListHeader extends StatelessWidget {
   const NotiListHeader({
@@ -17,13 +20,27 @@ class NotiListHeader extends StatelessWidget {
     required this.onTapChatting,
   }) : super(key: key);
 
+  ///This is the height value of the header.
   final double height;
+
+  ///This is the button height value of the header.
   final double buttonHeight;
+
+  ///This is the button margin value of the header.
   final EdgeInsets buttonMargin;
+
+  ///If this value is null, the Search button is not visible.
   final VoidCallback? onTapSearch;
+
+  ///If this value is true, the Search button's color changes.
   final bool isSearching;
+
+  ///This is the button radius value of the header.
   final double buttonRadius;
+
+  ///This value is to change the color of the currently selected button.
   final NotiTileType selectedType;
+
   final VoidCallback onTapAll;
   final VoidCallback onTapAlert;
   final VoidCallback onTapNormal;
