@@ -1,20 +1,21 @@
 library notification_listview;
 
+import 'dart:collection';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:notification_listview/notification_header.dart';
 import 'package:notification_listview/notification_type.dart';
 
-class NotificationListView extends StatelessWidget {
+@immutable
+class NotificationListView<T> extends StatefulWidget {
   const NotificationListView({
     Key? key,
+    required this.elements,
+    required this.groupBy,
     required this.hasHeader,
-    required this.itemBuilder,
-    required this.onTapAll,
-    required this.onTapAlert,
-    required this.onTapNormal,
-    required this.onTapChatting,
-    required this.selectedType,
+    this.itemBuilder,
+    this.indexItemBuilder,
     this.reverse = false,
     this.controller,
     this.primary,
@@ -37,6 +38,13 @@ class NotificationListView extends StatelessWidget {
     this.isSearching = false,
   }) : super(key: key);
 
+  //Custom
+  final List<T> elements;
+  final NotiTileType Function(T element) groupBy;
+  final Widget Function(BuildContext context, T element)? itemBuilder;
+  final Widget Function(BuildContext context, T element, int index)?
+      indexItemBuilder;
+
   // default
   final bool reverse;
   final ScrollController? controller;
@@ -56,56 +64,97 @@ class NotificationListView extends StatelessWidget {
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
   final String? restorationId;
   final Clip clipBehavior;
-  final Widget Function(BuildContext, int) itemBuilder;
   final bool hasHeader;
   final VoidCallback? onTapSearch;
   final bool isSearching;
 
-  final VoidCallback onTapAll;
-  final VoidCallback onTapAlert;
-  final VoidCallback onTapNormal;
-  final VoidCallback onTapChatting;
-  final NotiTileType? selectedType;
+  @override
+  State<NotificationListView<T>> createState() =>
+      _NotificationListViewState<T>();
+}
+
+class _NotificationListViewState<T> extends State<NotificationListView<T>> {
+  final List<T> _list = [];
+  NotiTileType _selectedType = NotiTileType.all;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void setList() {
+    _list.clear();
+
+    if (_selectedType == NotiTileType.all) {
+      _list.addAll(widget.elements);
+    } else {
+      for (var element in widget.elements) {
+        if (widget.groupBy(element) == _selectedType) {
+          _list.add(element);
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    setList();
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         NotiListHeader(
-          onTapSearch: onTapSearch,
-          isSearching: isSearching,
-          onTapAll: onTapAll,
-          onTapAlert: onTapAlert,
-          onTapNormal: onTapNormal,
-          onTapChatting: onTapChatting,
-          selectedType: selectedType,
+          onTapSearch: widget.onTapSearch,
+          isSearching: widget.isSearching,
+          selectedType: _selectedType,
+          onTapAll: () {
+            _selectedType = NotiTileType.all;
+            setState(() {});
+          },
+          onTapAlert: () {
+            _selectedType = NotiTileType.alert;
+            setState(() {});
+          },
+          onTapChatting: () {
+            _selectedType = NotiTileType.chatting;
+            setState(() {});
+          },
+          onTapNormal: () {
+            _selectedType = NotiTileType.normal;
+            setState(() {});
+          },
         ),
         Expanded(
           child: ListView.builder(
-            key: key,
-            reverse: reverse,
-            controller: controller,
-            primary: primary,
-            physics: scrollPhysics,
-            shrinkWrap: shrinkWrap,
-            padding: padding,
-            prototypeItem: prototypeItem,
-            itemExtent: itemExtent,
-            itemCount: itemCount,
-            addAutomaticKeepAlives: addAutomaticKeepAlives,
-            addRepaintBoundaries: addRepaintBoundaries,
-            addSemanticIndexes: addSemanticIndexes,
-            cacheExtent: cacheExtent,
-            semanticChildCount: semanticChildCount,
-            dragStartBehavior: dragStartBehavior,
-            keyboardDismissBehavior: keyboardDismissBehavior,
-            restorationId: restorationId,
-            clipBehavior: clipBehavior,
+            key: widget.key,
+            reverse: widget.reverse,
+            controller: widget.controller,
+            primary: widget.primary,
+            physics: widget.scrollPhysics,
+            shrinkWrap: widget.shrinkWrap,
+            padding: widget.padding,
+            prototypeItem: widget.prototypeItem,
+            itemExtent: widget.itemExtent,
+            itemCount: _list.length,
+            addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
+            addRepaintBoundaries: widget.addRepaintBoundaries,
+            addSemanticIndexes: widget.addSemanticIndexes,
+            cacheExtent: widget.cacheExtent,
+            semanticChildCount: widget.semanticChildCount,
+            dragStartBehavior: widget.dragStartBehavior,
+            keyboardDismissBehavior: widget.keyboardDismissBehavior,
+            restorationId: widget.restorationId,
+            clipBehavior: widget.clipBehavior,
             itemBuilder: itemBuilder,
           ),
         ),
       ],
     );
+  }
+
+  Widget itemBuilder(BuildContext context, int index) {
+    final value = _list[index];
+    return (widget.indexItemBuilder != null)
+        ? widget.indexItemBuilder!(context, value, index)
+        : widget.itemBuilder!(context, value);
   }
 }

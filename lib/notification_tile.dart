@@ -8,7 +8,6 @@ class NotiListViewTile extends StatelessWidget {
   const NotiListViewTile({
     Key? key,
     this.title,
-    this.isFirst = false,
     required this.content,
     this.height = 102.0,
     this.radius = 10.0,
@@ -31,7 +30,6 @@ class NotiListViewTile extends StatelessWidget {
     this.onTapDelete,
   }) : super(key: key);
 
-  final bool isFirst;
   final String? title;
   final String content;
   final double height;
@@ -67,32 +65,38 @@ class NotiListViewTile extends StatelessWidget {
         shadowColor: shadowColor,
         child: Container(
           height: height,
-          decoration: (notiTileType == NotiTileType.alert)
-              ? BoxDecoration(
-                  border: Border.all(color: Colors.red, width: 2),
-                  borderRadius: BorderRadius.circular(radius),
-                )
-              : null,
+          decoration: _cardDecoration(),
           constraints: BoxConstraints(minHeight: tileMinHeight),
           child: Stack(
             children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(
-                  sidePadding,
-                  topBottomPadding,
-                  sidePadding,
-                  topBottomPadding,
-                ),
-                child: _tileBody(),
-              ),
-              NotiStatusBar(
-                isNew: isNew,
-                onTapDelete: onTapDelete,
-              ),
+              _tile(),
+              _tileStatusBar(),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Decoration? _cardDecoration() {
+    if (notiTileType == NotiTileType.alert) {
+      return BoxDecoration(
+        border: Border.all(color: Colors.red, width: 2),
+        borderRadius: BorderRadius.circular(radius),
+      );
+    }
+    return null;
+  }
+
+  Widget _tile() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        sidePadding,
+        topBottomPadding,
+        sidePadding,
+        topBottomPadding,
+      ),
+      child: _tileBody(),
     );
   }
 
@@ -119,6 +123,13 @@ class NotiListViewTile extends StatelessWidget {
           notiTileType: notiTileType,
         ),
       ],
+    );
+  }
+
+  Widget _tileStatusBar() {
+    return NotiStatusBar(
+      isNew: isNew,
+      onTapDelete: onTapDelete,
     );
   }
 }
