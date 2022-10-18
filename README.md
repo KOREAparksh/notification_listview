@@ -1,3 +1,6 @@
+[![pub package](https://img.shields.io/badge/publisher-Park%20Seunghan-green)](https://github.com/KOREAparksh/notification_listview)
+[![pub package](https://img.shields.io/badge/pub-v1.1.0-blue)](https://github.com/KOREAparksh/notification_listview)
+
 <h1 align="center">Notification ListView</h1>
 
 <p align="center">
@@ -18,43 +21,131 @@
 ---
 
 
+This **NotificationListView Package** is optimized for the notification type used in the **Hyundai AutoEver internship assignments**.
+
+---
 
 
 ## Features
 
-This package is for **Hyundai AutoEver** internship assignments.
+- Shows data according to notification type.
+- Same as listview.builder except for itembuilder and header related properties.
 
-This list view is optimized for the notification type used in the Hyundai AutoEver project.
 
+## Getting Start
+Add the package to your pubspec.yaml.
+```yaml
+notification_listview: ^1.1.0
+```
 
-## Usage
+import the library in your file.
+```dart
+import 'package:notification_listview/notification_listview.dart';
+import 'package:notification_listview/notification_tile.dart';
+```
+
+In the T part, put the data class for your list.
 
 ```dart
-Scaffold(
-    body:  NotificationListView(
-            hasHeader: true,
-            onTapSearch: () {}, //nullable
-            onTapAll: () {},
-            onTapAlert: () {},
-            onTapNormal: () {},
-            onTapChatting: () {},
-            selectedType: null, // for header button color
-            isSearching: false, // for button color
-            itemCount: 7,
-            itemBuilder: (context, int i) => NotiListViewTile(
-                isFirst: (i == 0) ? true : false, // for top margin
-                isNew: true, // for badge
-                title: "title",
-                content: "content",
-                notiTileType: notiTileType.normal,
-                ),
-            ),
-    );
+List<String> list = [];
+
+NotificationListView<String>
+//NotificationListView<T>
+```
+
+In groupby, write a function that returns the NotiTileType of each element.
+```dart
+class Temp {
+  ...
+  final NotiTileType notiTileType = NotiTileType.alert;
+  ...
+}
+
+...
+groupBy: (element) => element.notiTileType,
+...
 ```
 
 ## Showcase
-![showcase1](https://github.com/KOREAparksh/notification_listview/blob/main/assets/showcase1.png?raw=true)
+
+<p>
+  <a >
+    <img src="https://raw.githubusercontent.com/KOREAparksh/notification_listview/main/assets/showcase1.png" width="49%"/>
+    <img src="https://raw.githubusercontent.com/KOREAparksh/notification_listview/main/assets/showcase2.png" width="49%"/>
+  </a>
+</p>
+
+
+## Example
+
+```dart
+
+class Temp {
+  final NotiTileType notiTileType;
+  final String title;
+  final String content;
+
+  const Temp(this.notiTileType, this.title, this.content);
+
+  @override
+  String toString() {
+    return 'Temp{title: $title, type: $notiTileType}\n';
+  }
+}
+
+class ListViewPage extends StatefulWidget {
+  const ListViewPage({Key? key}) : super(key: key);
+
+  @override
+  State<ListViewPage> createState() => _ListViewPageState();
+}
+
+class _ListViewPageState extends State<ListViewPage> {
+  final List<Temp> list = const [
+    Temp(NotiTileType.alert, "title", "content"),
+    Temp(NotiTileType.normal, "title", "content"),
+    Temp(NotiTileType.chatting, "title", "content"),
+    Temp(NotiTileType.alert, "title", "content"),
+    Temp(NotiTileType.normal, "title", "content"),
+    Temp(NotiTileType.chatting, "title", "content"),
+    Temp(NotiTileType.alert, "title", "content"),
+    Temp(NotiTileType.normal, "title", "content"),
+    Temp(NotiTileType.chatting, "title", "content"),
+    Temp(NotiTileType.alert, "title", "content"),
+    Temp(NotiTileType.normal, "title", "content"),
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: const CupertinoNavigationBar(
+        middle: Text("Notification ListView"),
+      ),
+      body: Container(
+        color: Colors.black12,
+        child: NotificationListView<Temp>(
+          elements: list,
+          groupBy: (element) => element.notiTileType,
+          hasHeader: true,
+          onTapSearch: () => print("tap search button"),
+          isSearching: false,
+          itemCount: list.length,
+          indexItemBuilder: (context, e, i) => NotiListViewTile(
+            isNew: true,
+            title: e.title,
+            content: e.content,
+            notiTileType: e.notiTileType,
+            onTapDelete: () => print("tap delete button"),
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
 
 ## Additional information
+- This package only support Korean.
 
-NotificationListView is the same as listview.builder except for the header related properties.
+## Contact
+- tmdgks22222@gmail.com
+- tmdgks2222@naver.com
