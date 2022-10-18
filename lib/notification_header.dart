@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:notification_listview/notification_listview.dart';
 import 'package:notification_listview/notification_type.dart';
+
+///See [NotificationListView].
 
 class NotiListHeader extends StatelessWidget {
   const NotiListHeader({
@@ -10,20 +13,34 @@ class NotiListHeader extends StatelessWidget {
     this.onTapSearch,
     this.isSearching = false,
     this.buttonRadius = 20,
-    this.selectedType,
+    required this.selectedType,
     required this.onTapAll,
     required this.onTapAlert,
     required this.onTapNormal,
     required this.onTapChatting,
   }) : super(key: key);
 
+  ///This is the height value of the header.
   final double height;
+
+  ///This is the button height value of the header.
   final double buttonHeight;
+
+  ///This is the button margin value of the header.
   final EdgeInsets buttonMargin;
+
+  ///If this value is null, the Search button is not visible.
   final VoidCallback? onTapSearch;
+
+  ///If this value is true, the Search button's color changes.
   final bool isSearching;
+
+  ///This is the button radius value of the header.
   final double buttonRadius;
-  final NotiTileType? selectedType;
+
+  ///This value is to change the color of the currently selected button.
+  final NotiTileType selectedType;
+
   final VoidCallback onTapAll;
   final VoidCallback onTapAlert;
   final VoidCallback onTapNormal;
@@ -64,20 +81,24 @@ class NotiListHeader extends StatelessWidget {
           children: [
             _headerButton(
               str: _allText,
-              isSelected: (selectedType == null) ? true : false,
+              isSelected: (selectedType == NotiTileType.all) ? true : false,
+              onTap: onTapAll,
             ),
             _headerButton(
               str: _alertText,
               isSelected: (selectedType == NotiTileType.alert) ? true : false,
+              onTap: onTapAlert,
             ),
             _headerButton(
               str: _normalText,
               isSelected: (selectedType == NotiTileType.normal) ? true : false,
+              onTap: onTapNormal,
             ),
             _headerButton(
               str: _chattingText,
               isSelected:
                   (selectedType == NotiTileType.chatting) ? true : false,
+              onTap: onTapChatting,
             ),
           ],
         ),
@@ -88,29 +109,37 @@ class NotiListHeader extends StatelessWidget {
   Widget _headerButton({
     required String str,
     bool isSelected = false,
-    VoidCallback? onTap,
+    required VoidCallback onTap,
   }) {
     return Container(
       height: buttonHeight,
       margin: buttonMargin,
       child: OutlinedButton(
         onPressed: onTap,
-        style: OutlinedButton.styleFrom(
-          backgroundColor: (isSelected) ? mainColor : Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(buttonRadius),
-            ),
-          ),
-          side: BorderSide(color: mainColor),
+        style: _buttonStyle(isSelected),
+        child: _text(str, isSelected),
+      ),
+    );
+  }
+
+  ButtonStyle _buttonStyle(bool isSelected) {
+    return OutlinedButton.styleFrom(
+      backgroundColor: (isSelected) ? mainColor : Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(buttonRadius),
         ),
-        child: Text(
-          str,
-          style: TextStyle(
-            color: (isSelected) ? Colors.white : Colors.black,
-            fontWeight: (isSelected) ? FontWeight.w600 : FontWeight.w400,
-          ),
-        ),
+      ),
+      side: BorderSide(color: mainColor),
+    );
+  }
+
+  Widget _text(String str, bool isSelected) {
+    return Text(
+      str,
+      style: TextStyle(
+        color: (isSelected) ? Colors.white : Colors.black,
+        fontWeight: (isSelected) ? FontWeight.w600 : FontWeight.w400,
       ),
     );
   }

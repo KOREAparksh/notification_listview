@@ -7,7 +7,6 @@ class NotiTileIcon extends StatelessWidget {
     required this.height,
     required this.imageMaxHeight,
     required this.imageMaxWidth,
-    required this.imageInfoWidth,
     required this.iconBackgroundColor,
     required this.imageRatio,
     required this.notiTileType,
@@ -17,7 +16,6 @@ class NotiTileIcon extends StatelessWidget {
   final double height;
   final double imageMaxHeight;
   final double imageMaxWidth;
-  final double imageInfoWidth;
   final Color iconBackgroundColor;
   final double imageRatio;
   final String? imageAssets;
